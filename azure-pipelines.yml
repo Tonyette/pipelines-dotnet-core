@@ -28,9 +28,4 @@ steps:
     targetPath: '$(Build.ArtifactStagingDirectory)'   
     artifactName: 'DotnetApp'
     
-- task: AzureWebApp@1
-  inputs:
-    appName: 'DotnetApp'
-    appType: webAppLinux
-    azureSubscription: 75b75ee1-c39e-460a-ab26-c4278ed6a46e
-    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+
