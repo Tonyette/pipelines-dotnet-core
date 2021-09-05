@@ -11,21 +11,43 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  sdkversion: '5.x'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+- task: UseDotNet@2
+  inputs:
+    version: '$(sdkversion)'
+    performMultiLevelLookup: true
+    includePreviewVersions: true
+
+- task: Npm@1
+  displayName: 'install npm'
+  inputs:
+    verbose: false
+  
+- script: './node_modules/.bin/node-sass wwwroot --output wwwroot'
+  displayName: 'Compile Sass assets'
+  
+- task: gulp@1
+  displayName: 'Run gulp tasks'
 
 - task: DotNetCoreCLI@2
-  inputs: 
-    command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
-    
-- task: PublishBuildArtifacts@1
+  displayName: 'restore package dependencies'
   inputs:
-    targetPath: '$(Agent.ArtifactStagingDirectory)'   
-    artifactName: 'DotnetApp'
-    
+    command: 'Restore'
+    projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '*/*.csproj'
+    arguments: '--no-restore --configuration $(buildConfiguration)'
+ 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '**/*.csproj'
+    arguments: '--no-build --configuration $(buildConfiguration) --output/$(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
+
 
