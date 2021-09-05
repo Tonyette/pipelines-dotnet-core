@@ -20,17 +20,6 @@ steps:
     performMultiLevelLookup: true
     includePreviewVersions: true
 
-- task: Npm@1
-  displayName: 'install npm'
-  inputs:
-    verbose: false
-  
-- script: './node_modules/.bin/node-sass wwwroot --output wwwroot'
-  displayName: 'Compile Sass assets'
-  
-- task: gulp@1
-  displayName: 'Run gulp tasks'
-
 - task: DotNetCoreCLI@2
   displayName: 'restore package dependencies'
   inputs:
