@@ -15,12 +15,6 @@ variables:
   sdkversion: '5.x'
 
 steps:
-- task: UseDotNet@2
-  inputs:
-    version: '$(sdkversion)'
-    performMultiLevelLookup: true
-    includePreviewVersions: true
-
 - task: DotNetCoreCLI@2
   displayName: 'restore package dependencies'
   inputs:
