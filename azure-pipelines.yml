@@ -12,9 +12,15 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  sdkversion: '5.x'
+  sdkversion: '5.0.x'
 
 steps:
+- task: UseDotNet@2
+  inputs:
+    version: '$(sdkversion)'
+    performMultiLevelLookup: true
+    includePreviewVersions: true
+
 - task: DotNetCoreCLI@2
   displayName: 'restore package dependencies'
   inputs:
@@ -32,6 +38,6 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: '**/*.csproj'
-    arguments: '--no-build --configuration $(buildConfiguration) --output/$(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
-
+    arguments: '--configuration $(buildConfiguration) --output/$(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: true
 
