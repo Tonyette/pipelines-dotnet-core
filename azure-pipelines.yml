@@ -12,7 +12,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  sdkversion: '5.0.x'
+  sdkversion: '2.2.x'
 
 steps:
 - task: UseDotNet@2
